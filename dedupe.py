@@ -8,7 +8,7 @@ file_a_path = sys.argv[1]
 file_b_path = sys.argv[2]
 output_file_path = sys.argv[3]
 
-search_limit = 40000
+search_limit = 20000
 
 df_a = pd.read_csv(file_a_path, header=0, names=['id_a','hash'])
 df_b = pd.read_csv(file_b_path, header=0, names=['id_b','hash'])
@@ -30,29 +30,31 @@ output_file = open(output_file_path, "w")
 count = 0
 search_string = ''
 check_string = ''
+print len(dup_ids), " Total duplicate documents"
 for i in dup_ids:
-	file_string = 'file_id:' + i
-	check_string += file_string + ' OR '
+	file_string = 'file_id:' + i + ' '
+	check_string += file_string
 	count += 1
 	#print len(search_string), len(check_string)
 	if len(check_string) < search_limit:
-		search_string += file_string + ' OR '
+		search_string += file_string 
 	else:
 		#print search_string[:-4]
-		output_file.write(search_string[:-4])
+		output_file.write(search_string)
 		output_file.write('\n')
 		output_file.write('---------------NEW SEARCH--------------------')
 		output_file.write('\n')
 		print len(search_string)
 		print len(check_string)
 		print count, " Total documents in this search"
+		count = 0
 		raw_input('Press Enter')
 		search_string = file_string
 		check_string = file_string
 
 
 #print search_string[:-4]
-output_file.write(search_string[:-4])
+output_file.write(search_string)
 print len(search_string)
 print count, " Total documents in this search"
 output_file.close()
